@@ -1,0 +1,1 @@
+java -jar E:\workspace\cyougs\src\main\resources\static\lib\mybatis-generator-core-1.3.2\lib\mybatis-generator-core-1.3.2.jar -configfile E:\workspace\cyougs\src\main\resources\generatorConfig.xml -overwrite

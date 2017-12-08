@@ -1,0 +1,128 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>User List</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<link rel="stylesheet"
+	href="../webjars/bootstrap/3.3.7-1/css/bootstrap.min.css"
+	th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"
+	type="text/css"></link>
+<link rel="stylesheet" href="../static/css/dataTables.bootstrap.min.css"
+	th:href="@{/css/dataTables.bootstrap.min.css}" type="text/css"></link>
+<link rel="stylesheet" href="../static/css/common.css"
+	th:href="@{/css/common.css}" type="text/css"></link>
+
+<script type="text/javascript"
+	src="../webjars/jquery/3.1.1-1/jquery.min.js"
+	th:src="@{/webjars/jquery/3.1.1-1/jquery.min.js}"></script>
+<script type="text/javascript"
+	src="../webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"
+	th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+	<div class="container" th:replace="common :: header('User List')"></div>
+
+	<div class="container"
+		style="background-color: Menu; border: none; margin-top: 5px; margin-bottom: 15px;">
+		<form id="frmUserDetail" class="form-horizontal"
+			th:action="@{'/user_list'}" th:object="${userListForm}"
+			th:method="post">
+			<div class="col-md-11">
+				<div class="form-group">
+					<div class="col-md-offset-2 col-md-8"
+						style="border: 0px solid gray; padding-bottom: 20px;">
+						<textarea class="box effect  form-control input-sm" rows="3"
+							style="font-size: large; line-height: 1; overflow: auto; border: none; background: Menu; color: red;"
+							id="comment" readonly="readonly"
+							th:text="${#strings.isEmpty(validationMessage)} ? '' : ${validationMessage} "></textarea>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-2">
+				<h4 style="margin: 0;">User List</h4>
+			</div>
+
+			<div class="col-md-offset-8 col-md-2">
+				<h6 class="pull-right" style="margin: 0;"
+					th:text="${#lists.isEmpty(usresList)} ? '検索結果：0件' : '検索結果：'+${#lists.size(usresList)}+'件'">検索結果：9999件</h6>
+			</div>
+		</div>
+		<hr style="border: 1px solid gray; margin: 0;" />
+		<div class="table-responsive" style="margin-bottom: 15px;">
+			<table id="tblUsers"
+				class="table table-hover table-condensed display nowrap dataTable no-footer"
+				style="font-size: x-small;">
+				<thead>
+					<tr style="background-color: black; color: white;">
+						<th width="100px">username</th>
+						<th width="100px">pswhash</th>
+						<th width="100px">pwdalgorithm</th>
+						<th width="100px">useforwarding</th>
+						<th width="100px">forwarddestination</th>
+						<th width="100px">useralias</th>
+						<th width="100px">alias</th>
+					</tr>
+				</thead>
+				<tbody th:id="${usresList}"
+					th:if="!${#lists.isEmpty(usresList)}">
+					<tr th:each="usres : ${usresList}">
+						<td th:text="${usres.username}"></td>
+						<td th:text="${usres.pwdhash}"></td>
+						<td th:text="${usres.pwdalgorithm}"></td>
+						<td th:text="${usres.useforwarding}"></td>
+						<td th:text="${usres.forwarddestination}"></td>
+						<td th:text="${usres.usealias}"></td>
+						<td th:text="${usres.alias}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+
+	<div class="container" style="margin-bottom: 15px;">
+		<span class="clearfix"></span>
+	</div>
+
+	<div id="pop-div" class="pop-box">
+		<img src="../static/images/loding.gif" th:src="@{/images/loding.gif}" />
+	</div>
+	<div id="mask"></div>
+	<div class="container" th:replace="common :: footer"></div>
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+
+		function popupDiv(div_id) {
+			var div_obj = $("#" + div_id);
+			var posLeft = ($(window).width() - div_obj.width()) / 2;
+			var posTop = ($(window).height() - div_obj.height()) / 2;
+
+			$("#mask").addClass("mask").appendTo("body").fadeIn(200);
+
+			div_obj.css({
+				"top" : posTop,
+				"left" : posLeft
+			}).fadeIn();
+		}
+
+		function hideDiv(div_id) {
+			$("#mask").removeClass("mask");
+			$("#" + div_id).fadeOut();
+		}
+		/** ロード中のイメージ*/
+		$("#btnConfirm").click(function() {
+			popupDiv('pop-div');
+			hideDiv('pop-div');
+		});
+
+		/*]]>*/
+	</script>
+</body>
+
+</html>

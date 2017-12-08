@@ -1,0 +1,120 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>ユーザマスタ(明細)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<link rel="stylesheet"
+	href="../webjars/bootstrap/3.3.7-1/css/bootstrap.min.css"
+	th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"
+	type="text/css"></link>
+<link rel="stylesheet" href="../static/css/dataTables.bootstrap.min.css"
+	th:href="@{/css/dataTables.bootstrap.min.css}" type="text/css"></link>
+<link rel="stylesheet" href="../static/css/common.css"
+	th:href="@{/css/common.css}" type="text/css"></link>
+
+<script type="text/javascript"
+	src="../webjars/jquery/3.1.1-1/jquery.min.js"
+	th:src="@{/webjars/jquery/3.1.1-1/jquery.min.js}"></script>
+<script type="text/javascript"
+	src="../webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"
+	th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+	<div class="container" th:replace="common :: header('ユーザマスタ(明細)')"></div>
+
+	<div class="container"
+		style="background-color: Menu; border: none; margin-top: 5px; margin-bottom: 15px;">
+		<form id="frmUserDetail" class="form-horizontal"
+			th:action="@{'/user_detail'}" th:object="${userDetailForm}"
+			th:method="post">
+			<div class="col-md-11">
+				<div class="form-group">
+					<div class="col-md-offset-2 col-md-8"
+						style="border: 0px solid gray; padding-bottom: 20px;">
+						<textarea class="box effect  form-control input-sm" rows="3"
+							style="font-size: large; line-height: 1; overflow: auto; border: none; background: Menu; color: red;"
+							id="comment" readonly="readonly"
+							th:text="${#strings.isEmpty(validationMessage)} ? '' : ${validationMessage} "></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<table th:id="tblAuditProgress"
+					class="table table-hover table-condensed display nowrap dataTable no-footer"
+					style="font-size: small;">
+					<thead>
+						<tr style="background-color: black; color: white; font-size: 13px">
+							<th class="col-md-0">SKU</th>
+							<th class="col-md-0">商品名</th>
+							<th class="col-md-0">登録者</th>
+							<th class="col-md-0">登録日</th>
+							<th class="col-md-0">登録時間</th>
+							<th class="col-md-0">更新者</th>
+							<th class="col-md-0">更新日</th>
+							<th class="col-md-0">更新時間</th>
+						</tr>
+					</thead>
+					<tbody style="font-size: 11px; 　display: none" th:id="productInfo"
+						th:if="!${#lists.isEmpty(skuList)}">
+						<tr th:each="skuList : ${skuList}">
+							<td class="col-md-0"><a id="a"
+								href="../sku_master_detail.html"
+								th:href="@{/skuMasterDetail(sku=${skuList.sku})}"
+								th:text="${skuList.sku}"></a></td>
+							<td class="col-md-4" th:text="${skuList.logisticsSkuName}"></td>
+							<td class="col-md-0" th:text="${skuList.createUser}"></td>
+							<td class="col-md-0" th:text="${skuList.createDate}"></td>
+							<td class="col-md-0" th:text="${skuList.createTime}"></td>
+							<td class="col-md-0" th:text="${skuList.updateUser}"></td>
+							<td class="col-md-0" th:text="${skuList.updateDate}"></td>
+							<td class="col-md-0" th:text="${skuList.updateTime}"></td>
+
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+		</form>
+	</div>
+	<div class="container" style="margin-bottom: 15px;">
+		<span class="clearfix"></span>
+	</div>
+
+	<div id="pop-div" class="pop-box">
+		<img src="../static/images/loding.gif" th:src="@{/images/loding.gif}" />
+	</div>
+	<div id="mask"></div>
+	<div class="container" th:replace="common :: footer"></div>
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+
+		function popupDiv(div_id) {
+			var div_obj = $("#" + div_id);
+			var posLeft = ($(window).width() - div_obj.width()) / 2;
+			var posTop = ($(window).height() - div_obj.height()) / 2;
+
+			$("#mask").addClass("mask").appendTo("body").fadeIn(200);
+
+			div_obj.css({
+				"top" : posTop,
+				"left" : posLeft
+			}).fadeIn();
+		}
+
+		function hideDiv(div_id) {
+			$("#mask").removeClass("mask");
+			$("#" + div_id).fadeOut();
+		}
+		/** ロード中のイメージ*/
+		$("#btnConfirm").click(function() {
+			popupDiv('pop-div');
+			hideDiv('pop-div');
+		});
+
+		/*]]>*/
+	</script>
+</body>
+
+</html>

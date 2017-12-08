@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cyougs.mail.mapper.UsersMapper" >
+  <resultMap id="BaseResultMap" type="com.cyougs.mail.dao.Users" >
+    <id column="username" property="username" jdbcType="VARCHAR" />
+    <result column="pwdhash" property="pwdhash" jdbcType="VARCHAR" />
+    <result column="pwdalgorithm" property="pwdalgorithm" jdbcType="VARCHAR" />
+    <result column="useforwarding" property="useforwarding" jdbcType="SMALLINT" />
+    <result column="forwarddestination" property="forwarddestination" jdbcType="VARCHAR" />
+    <result column="usealias" property="usealias" jdbcType="SMALLINT" />
+    <result column="alias" property="alias" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from users
+    where username = #{username,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cyougs.mail.dao.Users" >
+    insert into users (username, pwdhash, pwdalgorithm, 
+      useforwarding, forwarddestination, usealias, 
+      alias)
+    values (#{username,jdbcType=VARCHAR}, #{pwdhash,jdbcType=VARCHAR}, #{pwdalgorithm,jdbcType=VARCHAR}, 
+      #{useforwarding,jdbcType=SMALLINT}, #{forwarddestination,jdbcType=VARCHAR}, #{usealias,jdbcType=SMALLINT}, 
+      #{alias,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.cyougs.mail.dao.Users" >
+    update users
+    set pwdhash = #{pwdhash,jdbcType=VARCHAR},
+      pwdalgorithm = #{pwdalgorithm,jdbcType=VARCHAR},
+      useforwarding = #{useforwarding,jdbcType=SMALLINT},
+      forwarddestination = #{forwarddestination,jdbcType=VARCHAR},
+      usealias = #{usealias,jdbcType=SMALLINT},
+      alias = #{alias,jdbcType=VARCHAR}
+    where username = #{username,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select username, pwdhash, pwdalgorithm, useforwarding, forwarddestination, usealias, 
+    alias
+    from users
+    where username = #{username,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select username, pwdhash, pwdalgorithm, useforwarding, forwarddestination, usealias, 
+    alias
+    from users
+  </select>
+</mapper>

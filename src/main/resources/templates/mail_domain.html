@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Mail Servers</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+<script type="text/javascript" src="../static/js/jquery-3.2.1.min.js"></script>
+<link rel="stylesheet" href="../static/css/bootstrap.min.css"
+	type="text/css"></link>
+<script th:inline="javascript">
+	
+</script>
+</head>
+<body>
+	<div class="container" th:replace="common :: header('Mail Domain')"></div>
+	<div class="container">
+		<form id="frmPut" class="form-horizontal" th:action="@{'/mail_domin'}"
+			th:object="${mailDomainForm}" th:method="post">
+			<div class="container"
+				style="background-color: Menu; border: none; margin-top: 15px; margin-bottom: 15px;">
+				<div class="col-md-11">
+					<div class="form-group">
+						<div class="col-md-offset-2 col-md-8"
+							style="border: 0px solid gray; padding-bottom: 20px;">
+							<textarea class="box effect  form-control input-sm" rows="3"
+								style="font-size: large; line-height: 1; overflow: auto; border: none; background: Menu; color: red;"
+								id="comment" readonly="readonly"
+								th:text="${#strings.isEmpty(validationMessage)} ? '' : ${validationMessage}"></textarea>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<table th:id="tblAuditProgress"
+						class="table table-hover table-condensed display nowrap dataTable no-footer"
+						style="font-size: small;">
+						<thead>
+							<tr
+								style="background-color: black; color: white; font-size: 13px">
+								<th class="col-md-0">domain</th>
+								<th class="col-md-0">商品名</th>
+								<th class="col-md-0">登録者</th>
+							</tr>
+						</thead>
+						<tbody style="font-size: 11px; 　display: none" th:id="productInfo"
+							th:if="!${#lists.isEmpty(skuList)}">
+							<tr th:each="skuList : ${skuList}">
+								<td class="col-md-0"><a id="a"
+									href="../sku_master_detail.html"
+									th:href="@{/skuMasterDetail(sku=${skuList.sku})}"
+									th:text="${skuList.sku}"></a></td>
+								<td class="col-md-4" th:text="${skuList.logisticsSkuName}"></td>
+								<td class="col-md-0" th:text="${skuList.createUser}"></td>
+								<td class="col-md-0" th:text="${skuList.createDate}"></td>
+								<td class="col-md-0" th:text="${skuList.createTime}"></td>
+								<td class="col-md-0" th:text="${skuList.updateUser}"></td>
+								<td class="col-md-0" th:text="${skuList.updateDate}"></td>
+								<td class="col-md-0" th:text="${skuList.updateTime}"></td>
+
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<div class="container" style="margin-bottom: 15px;">
+		<span class="clearfix"></span>
+	</div>
+	<div class="container" th:replace="common :: footer"></div>
+</body>
+
+</html>
